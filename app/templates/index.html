@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Projects by Curioustools</title>
+
+    <style>
+        @font-face {
+            font-family: 'archiaregular';
+            src: url('../static/fonts/archia-regular-webfont.eot');
+            src: url('../static/fonts/archia-regular-webfont.eot?#iefix') format('embedded-opentype'),
+                url('../static/fonts/archia-regular-webfont.woff2') format('woff2'),
+                url('../static/fonts/archia-regular-webfont.woff') format('woff'),
+                url('../static/fonts/archia-regular-webfont.ttf') format('truetype');
+
+        }
+
+        * {
+            font-family: archiaregular;
+            font-weight: bold;
+            font-style: normal;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+
+    <!-- goto top button -->
+    <a style="
+        position:fixed;
+        bottom:40px;
+        right:40px;
+        
+        background-color:#cdf8e6;
+        color:rgb(0, 0, 0);
+        font-weight: bold;
+        padding: 16px;
+        border-width: 2px;
+        border-radius:8px;" href="#">
+        TOP
+    </a>
+
+    <!-- Bootstrap nav bar -->
+
+    <section>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
+            <a class="navbar-brand " href="{{url_for('func_main')}}">
+                <img class="align-middle" src="../static/img/navicon.svg" width="50px" height="50px">
+                <h2 class="d-inline align-middle"><b>Projects</b></h2>
+
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item"> <a class="nav-link active" href="{{url_for('func_main')}}">ToolBox</a></li>
+                <li class="nav-item"> <a class="nav-link" href="https://ctools-blog.herokuapp.com/">Other Web Projects</a></li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://root-ansh.github.io/curioustools/" class="btn btn-warning" role="button"><b>Visit Curioustool</b></a>
+                </li>
+            </ul>
+        </nav>
+
+    </section>
+
+
+
+    <!-- Section for toolbox items -->
+    <section class="container-fluid">
+        <div class="row justify-content-center">
+
+
+            <!-- ALL PROJECTS HERE -->
+
+            <div class="col-sm-12">
+
+                <div class="m-4 p-4 shadow  bg-white rounded-lg">
+
+                    <!-- Session Toast -->
+
+                    {% set a_ses=False %}
+                    {% if a_ses==True %}
+                        <div class="alert bg-light text-dark alert-dismissible fade show" role="alert">
+                            <p>
+                                Hello! Your Recently generated shortlinks are as follows:
+                            </p>
+                            <hr>
+
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                            <div>
+
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+                                <a href="#" class="mb-2 p-2 badge badge-pill badge-light bg-white text-info ">/Light</a>
+
+
+
+                            </div>
+                            <p>
+                                <small>Note: Your last generated shortlinks are only visible to users of your PC for 1
+                                    week</small>
+                            </p>
+                        </div>
+                    {% else %}
+                        <div>
+                        <!-- Don't show session toast -->
+
+                        </div>
+                        
+                    {% endif %}
+
+
+                    <!-- Toasts -->
+
+                    <div>
+
+
+                        <!-- 
+                        
+                            page recieves the following data:
+                            ae    = alertentry   = 
+                                None or 
+                                {"type":"success", "data":["secret_key","shortcode"]} or 
+                                {"type":"fail",  "msg": "$error"}
+                            a_ses = alertSession = None or ["sc1","sc2","sc3"]
+                            
+                         -->
+
+                        {% if ae==None %}
+
+                            {% set show_red_alert   = False %}
+                            {% set show_green_alert = False %}
+                            {% set manager_key      =   ""  %}
+                            {% set short_url_code   =   "#" %}
+                            {% set error_msg        =   ""  %}
+     
+    
+                        {% elif ae.get('type')=='success' %}
+
+                            {% set show_red_alert   = False                 %}
+                            {% set show_green_alert = True                  %}
+                            {% set manager_key      = ae.get('data')[0]     %}
+                            {% set short_url_code   = ae.get('data')[1]     %}
+                            {% set error_msg        =   ""                  %}
+
+                        {% else %}
+
+                            {% set show_red_alert   = True                  %}
+                            {% set show_green_alert = False                 %}
+                            {% set manager_key      = ""                    %}
+                            {% set short_url_code   = "#"                   %}
+                            {% set error_msg        = ae.get('msg')                  %}
+                                                        
+                        {% endif %}
+
+                        <!-- toast failure -->
+                        {% if show_red_alert %}
+                            <div class="m-2 alert  alert-danger fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+    
+                                <p>
+                                    {{error_msg}}
+                                </p>
+                                
+                            </div>
+                        {% endif %}
+
+                        
+                        
+                        <!-- toast Sucess -->
+                        <!-- todo replace localhost with request.endpoint -->
+
+                        {% if show_green_alert %}
+                            <div class="m-2 alert alert-success" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+    
+                                Success! Your new shortlink is live at:
+                                <a class="m-2 p-2 badge badge-light bg-white text-success " 
+                                    target="_blank"
+                                    href="{{ url_for('func_api_sc_to_url', short_code=short_url_code )   }}"
+                                    >
+                                    {% set fullurl = request.url_root+"u/"+short_url_code %}
+                                    {{ fullurl }}
+    
+                                </a>
+    
+                                <br>
+    
+                                This will be available forever! use the SECRET CODE :
+                                <span class="p-2 badge badge-pill badge-light bg-white text-success ">
+                                    {{manager_key}}
+                                </span>
+                                (Long press to copy) in the right side form to edit or delete the short url.
+    
+                            </div>
+                        
+                        {% endif %}
+                        
+                        
+                    </div>
+                        
+
+                    
+                    <h3 class="border-bottom">Url Shortner</h3>
+                    <p>
+                        Add your url and alias to get a shortened url from our superfast servers! You will also recieve
+                        a secret key which you can write down to edit or delete the url later. <br>
+                        (Well not really fast or short. but )URLS are valid forever!*
+                    </p>
+                    <hr>
+
+
+                    <div class="container-fluid">
+
+                        <!-- The 2 forms -->
+                        <div class="row ">
+                            <div class="col-sm-6">
+                                <div class="p-3 border rounded-lg">
+                                    <h3>Shorten Url!</h3>
+                                    <hr>
+                                    
+
+                                    <form method="POST" action= "{{ url_for('func_main') }}" autocomplete="off" class="needs-validation" novalidate>
+                                        <div class="form-group">
+                                            <label for="id_url">Enter Url:</label>
+                                            <input 
+                                                type="url"
+                                                id="id_url"
+                                                name="req_url"
+                                                class="form-control"
+                                                placeholder="eg https://www.mylongurl.com/" 
+                                                required
+                                            >
+
+                                            <div class="valid-feedback">Valid.</div>
+                                            <div class="invalid-feedback">Please fill out this field.</div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_code">Enter Short Code:</label>
+
+                                            <div class="input-group">
+                                                <input 
+                                                    type="text"
+                                                    id="id_code"
+                                                    name = "req_sc" 
+                                                    class="form-control"
+                                                    maxlength="32"
+                                                    placeholder="Try 'tiny-bunny'" 
+                                                    required
+                                                >
+                                                <div class="input-group-append">
+                                                    <button 
+                                                        type="submit"
+                                                        name="key_form_type"
+                                                        value="FORM_NEW_ENTRY"
+                                                        class="btn btn-success"
+                                                    >
+                                                        Submit
+                                                    
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </form>
+
+
+
+
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="p-3 border rounded-lg">
+                                    <h3>Manage Your Url!</h3>
+                                    <hr>
+                                    <div>
+
+
+                                        <!-- 
+                                    
+                                            mg_req
+                                                = None
+                                                = {"type":"error",  "msg":"Null entries recieved","values":None}
+                                                = {"type":"error",  "msg":"No entries  recieved for this key","values":None}
+                                                = {"type":"success","msg":None                   ,"values":[del_id,short_code,url]}
+                                        
+                                        -->
+                                        <!-- 
+                                            
+                                            initially(get request)(mg_req==None):
+                                                only manager input form is enabled and visible, manager entries form is hidden,toast is hidden
+                                            on button press
+                                                if(type == "error")
+                                                    mgr input is enabled and visible, manager entries are hidden, error toast is visible 
+                                                else:
+                                                    mgg input is disabled, manager entries are shown with values url| and shortkey (not handling the secial null case)
+                                        -->
+                                    
+                                    
+                                        {% if(mg_req==None) %}
+                                            {% set enableMgrInput = True %}
+                                            {% set showEditorForm  = False %}
+                                            {% set toast  = None %}
+                                            {% set editorData = ['','','']%}
+                                    
+                                    
+                                        {% else %}
+                                            {% if(mg_req['type']=='error') %}
+                                                {% set enableMgrInput = True %}
+                                                {% set showEditorForm  = False %}
+                                                {% set toast  = mg_req['msg'] %} 
+                                                {% set editorData = ['','','']%}
+                                    
+                                    
+                                            {% else %}
+                                                {% set enableMgrInput = False %}
+                                                {% set showEditorForm  = True %}
+                                                {% set toast  = None %} 
+                                                {% set editorData = mg_req["values"] %}
+                                    
+                                            {% endif %}
+                                    
+                                        
+                                        {% endif %}
+                                    
+                                    
+                                        <!-- 
+                                    
+                                        SHOULD OLY RUN IF up_resp !=NONE . since this action can be only performed if
+                                        previous action is performed(i.e adding a correct deleted key,),
+                                        which happens without considering it (i.e passing none to it), running this
+                                        action after the previous one will cancel the previous action, kind of like css sheets
+                                        up_resp = None
+                                        up_resp = {"type":"error" ,  "msg"="some error occurred while updating data"}
+                                        up_resp = {"type":"error" ,  "msg"="null inputs received"}
+                                        up_resp = {"type":"success" ,"msg"="succesfully updated"}
+                                    
+                                    
+                                        -->
+                                    
+                                        {% if(up_resp!=None) %}
+                                            {% set enableMgrInput = True %}
+                                            {% set showEditorForm  = False %}
+                                            {% set toast  = up_resp['msg'] %}
+                                            {% set editorData = ['','','']%}
+                                        {% endif %}
+                                    
+                                    
+                                        <!-- 
+                                    
+                                        SHOULD OLY RUN IF up_resp !=NONE . since this action can be only performed if
+                                        previous action is performed(i.e adding a correct deleted key,),
+                                        which happens without considering it (i.e passing none to it), running this
+                                        action after the previous one will cancel the previous action, kind of like css sheets
+                                        del_resp = None
+                                        del_resp = {"type":"error" ,  "msg"="some error occurred while deleting data"}
+                                        del_resp = {"type":"error" ,  "msg"="null inputs received"}
+                                        del_resp = {"type":"success" ,"msg"="succesfully updated"}
+                                    
+                                        -->
+                                    
+                                        {% if(del_resp!=None) %}
+                                            {% set enableMgrInput = True %}
+                                            {% set showEditorForm  = False %}
+                                            {% set toast  = del_resp['msg'] %}
+                                            {% set editorData = ['','','']%}
+                                    
+                                        {% endif %}
+                                    
+                                    </div>
+                                    
+
+                                    <form 
+                                        action="{{ url_for('func_main') }}" 
+                                        method="POST"  
+                                        class="needs-validation"
+                                        autocomplete="off"
+                                        novalidate
+                                        >
+
+                                        <div class="form-group">
+                                            <label for="id_code">Enter SECRET_CODE </label>
+
+                                            <div class="input-group">
+                                                <input
+                                                    type="text"
+                                                    name="req_skey"
+                                                    placeholder="beep-bop"
+                                                    maxlength="20" 
+                                                    value="{{ editorData[0] }}" 
+
+                                                    class="form-control"
+                                                    id="id_code"
+                                                    required
+                                                    {% if(enableMgrInput==False)  %}
+                                                        disabled
+                                                    {% endif %}
+                                                    >
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-danger" type="submit" name="key_form_type" value="FORM_SECRET_KEY">Submit</button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </form>
+
+                                    {% if (showEditorForm==True) %}
+
+                                    <hr>
+                                    <form 
+                                        action="{{ url_for('func_main') }}" 
+                                        method="POST" 
+                                        novalidate
+                                        class="needs-validation">
+
+                                        <div class="form-group">
+
+                                            <label for="id_url">Your Short Code:</label>
+                                            <input 
+                                                type="text"
+                                                name="req_scode_2"  
+                                                placeholder="beep bop" 
+                                                value="{{ editorData[1] }}" 
+                                                required
+                                                class="form-control"
+                                                id="id_url"
+                                                
+                                                required
+                                            >
+
+                                            <div class="valid-feedback">Valid.</div>
+                                            <div class="invalid-feedback">Please fill out this field.</div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_code">Your Url: </label>
+
+                                            <input 
+                                            type="text" 
+                                            name="req_url2"  
+                                            placeholder="eg https://www.mylongurl.com/" 
+
+                                            value="{{ editorData[2] }}" 
+                                            required
+                                            class="form-control" 
+                                            id="id_code"
+                                            > 
+        
+
+
+                                        </div>
+
+                                        <label >Take an Action:</label><br>
+                                        <button type="submit" name="key_form_type"  class="btn btn-info"  value="FORM_UPDATE">Update Info</button>
+                                        <button type="submit" name="key_form_type"  class="btn btn-danger"value="FORM_DELETE">Delete</button>
+
+
+
+                                    </form>
+
+
+                                    {% endif %}
+
+
+                                    {% if (toast!=None) %}
+                                        <div class="m-2 alert  alert-warning fade show" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                
+                                            <p>
+                                                {{toast}}
+                                            </p>
+                                            
+                                        </div>
+                                    {% endif %} 
+
+                                    
+
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+                      
+
+
+                      
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                </div>
+
+                <script>
+                    // Disable form submissions if there are invalid fields
+                    (function () {
+                        'use strict';
+                        window.addEventListener('load', function () {
+                            // Get the forms we want to add validation styles to
+                            var forms = document.getElementsByClassName('needs-validation');
+                            // Loop over them and prevent submission
+                            var validation = Array.prototype.filter.call(forms, function (form) {
+                                form.addEventListener('submit', function (event) {
+                                    if (form.checkValidity() === false) {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                    }
+                                    form.classList.add('was-validated');
+                                }, false);
+                            });
+                        }, false);
+                    })();
+                </script>
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+
+
+
+
+
+</html>
+
+
+

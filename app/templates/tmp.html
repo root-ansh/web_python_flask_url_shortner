@@ -1,0 +1,214 @@
+<h1>Hello world</h1>
+
+<form action="{{ url_for('func_main') }}" method="POST" autocomplete="off" novalidate>
+    <input type="url" name="req_url"  placeholder="enter url" required>
+    <input type="text" name="req_sc"  placeholder="enter shortcode" required>
+    <button type="submit" name="key_form_type" value="FORM_NEW_ENTRY">Submit</button>
+
+    <!-- 
+        require will check weather the fields are filled or not
+        temporarily using novalidate att to disable such check
+     -->
+</form>
+
+<div style="background-color: antiquewhite;">
+
+
+<!-- 
+
+    page recieves the following data:
+    ae    = alertentry   = None or {"type":"success", "data":["secret_key","shortcode"]} or {"type":"fail",  "msg": "$error"}
+    a_ses = alertSession = None or ["sc1","sc2","sc3"]
+    
+ -->
+
+{% if ae==None%}
+
+<p>No need to show any entry alert. user has'nt used our form</p>
+
+{% elif ae.get('type')=='success' %}
+
+{% set v= ae.get('data')[1] %}
+<p>
+    Success! your url is   <a href="http://localhost:5000/u/{{v}}" target="_blanc">http://localhost:5000/u/{{ v }}}</a> .also your delete key is
+ 
+    {{ ae.get('data')[0] }} 
+</p>
+
+{% else %}
+<p>{{ae.get('msg')  }}</p>
+
+{% endif %}
+
+
+{% if a_ses==None %}
+<p>No session present</p>
+
+{% else %}
+
+<p>Your recently generated urls are:</p>
+
+{% for v in a_ses.items()  %}
+    <a href="http://localhost:5000/u/{{v}}" target="_blanc">/{{v}}</a>
+{% endfor %}
+
+{% endif %}
+</div>
+
+<hr>
+
+
+<div>
+
+
+    <!-- 
+
+        mg_req
+            = None
+            = {"type":"error",  "msg":"Null entries recieved","values":None}
+            = {"type":"error",  "msg":"No entries  recieved for this key","values":None}
+            = {"type":"success","msg":None                   ,"values":[del_id,short_code,url]}
+    
+    -->
+    <!-- 
+        
+        initially(get request)(mg_req==None):
+            only manager input form is enabled and visible, manager entries form is hidden,toast is hidden
+        on button press
+            if(type == "error")
+                mgr input is enabled and visible, manager entries are hidden, error toast is visible 
+            else:
+                mgg input is disabled, manager entries are shown with values url| and shortkey (not handling the secial null case)
+    -->
+
+
+    {% if(mg_req==None) %}
+        {% set enableMgrInput = True %}
+        {% set showEditorForm  = False %}
+        {% set toast  = None %}
+        {% set editorData = ['','','']%}
+
+
+    {% else %}
+        {% if(mg_req['type']=='error') %}
+            {% set enableMgrInput = True %}
+            {% set showEditorForm  = False %}
+            {% set toast  = mg_req['msg'] %} 
+            {% set editorData = ['','','']%}
+
+
+        {% else %}
+            {% set enableMgrInput = False %}
+            {% set showEditorForm  = True %}
+            {% set toast  = None %} 
+            {% set editorData = mg_req["values"] %}
+
+        {% endif %}
+
+    
+    {% endif %}
+
+
+    <!-- 
+
+    SHOULD OLY RUN IF up_resp !=NONE . since this action can be only performed if
+    previous action is performed(i.e adding a correct deleted key,),
+    which happens without considering it (i.e passing none to it), running this
+    action after the previous one will cancel the previous action, kind of like css sheets
+    up_resp = None
+    up_resp = {"type":"error" ,  "msg"="some error occurred while updating data"}
+    up_resp = {"type":"error" ,  "msg"="null inputs received"}
+    up_resp = {"type":"success" ,"msg"="succesfully updated"}
+
+
+    -->
+
+    {% if(up_resp!=None) %}
+        {% set enableMgrInput = True %}
+        {% set showEditorForm  = False %}
+        {% set toast  = up_resp['msg'] %}
+        {% set editorData = ['','','']%}
+    {% endif %}
+
+
+    <!-- 
+
+    SHOULD OLY RUN IF up_resp !=NONE . since this action can be only performed if
+    previous action is performed(i.e adding a correct deleted key,),
+    which happens without considering it (i.e passing none to it), running this
+    action after the previous one will cancel the previous action, kind of like css sheets
+    del_resp = None
+    del_resp = {"type":"error" ,  "msg"="some error occurred while deleting data"}
+    del_resp = {"type":"error" ,  "msg"="null inputs received"}
+    del_resp = {"type":"success" ,"msg"="succesfully updated"}
+
+    -->
+
+    {% if(del_resp!=None) %}
+        {% set enableMgrInput = True %}
+        {% set showEditorForm  = False %}
+        {% set toast  = del_resp['msg'] %}
+        {% set editorData = ['','','']%}
+
+    {% endif %}
+
+</div>
+
+
+
+
+
+<form 
+action="{{ url_for('func_main') }}" 
+method="POST" 
+autocomplete="off" 
+novalidate>
+    <input 
+        type="text" 
+        name="req_skey"  
+        placeholder="enter secret key" 
+        maxlength="20" 
+        value="{{ editorData[0] }}" 
+        required
+        {% if(enableMgrInput==False)  %}
+            disabled
+        {% endif %}
+        >
+
+    <button type="submit" name="key_form_type" value="FORM_SECRET_KEY">Submit</button>
+
+</form>
+
+
+{% if (showEditorForm==True) %}
+
+    <form 
+    action="{{ url_for('func_main') }}" 
+    method="POST" 
+    novalidate
+    >
+        <input
+         type="text" name="req_scode_2"  placeholder="secret key" value="{{ editorData[1] }}" required>
+        <input 
+        type="text" name="req_url2"  placeholder="url" value="{{ editorData[2] }}" required>
+        <button type="submit" name="key_form_type" value="FORM_UPDATE">Update</button>
+        <button type="submit" name="key_form_type" value="FORM_DELETE">Delete</button>
+    </form>
+
+{% endif %}
+
+
+{% if (toast!=None) %}
+    <div>{{ toast }}</div>
+{% endif %} 
+
+
+
+
+<hr>
+
+
+
+
+
+
