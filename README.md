@@ -6,6 +6,8 @@
 
 This is a server based url shortner app made using flask(python)  and bootstrap. it can be used to shorten your urls to whatever alias you want. this also provides a secret key to edit or delete the shortlink. the application is live at : http://curioustools.herokuapp.com/
 
+**Todo**
+- improvements/expansion : moved to issues
 
 **Done**
 
